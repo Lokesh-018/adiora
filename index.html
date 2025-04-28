@@ -144,6 +144,10 @@
   <audio id="typeSound" src="https://assets.mixkit.co/sfx/preview/mixkit-typewriter-click-1125.mp3"></audio>
   <audio id="glitchSound" src="https://assets.mixkit.co/sfx/preview/mixkit-glitchy-digital-error-3102.mp3"></audio>
   <audio id="buttonSound" src="https://assets.mixkit.co/sfx/preview/mixkit-select-click-1109.mp3"></audio>
+  <audio id="backgroundMusic" src="https://assets.mixkit.co/music/preview/mixkit-dark-ambient-background-107.mp3" loop></audio>
+  <!-- Add new audio elements for additional sound effects -->
+  <audio id="flickerSound" src="https://assets.mixkit.co/sfx/preview/mixkit-short-circuit-2813.mp3"></audio>
+  <audio id="matrixRainSound" src="https://assets.mixkit.co/sfx/preview/mixkit-digital-rain-3123.mp3" loop></audio>
 
   <script>
     // Matrix Rain Effect
@@ -158,6 +162,10 @@
     const columns = canvas.width / fontSize;
 
     const drops = Array(Math.floor(columns)).fill(1);
+
+    const matrixRainSound = document.getElementById('matrixRainSound');
+    matrixRainSound.volume = 0.3; // Adjust volume as needed
+    matrixRainSound.play();
 
     function drawMatrix() {
       ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
@@ -186,11 +194,14 @@
     const typeSound = document.getElementById('typeSound');
     const glitchSound = document.getElementById('glitchSound');
     const buttonSound = document.getElementById('buttonSound');
+    const flickerSound = document.getElementById('flickerSound');
 
     const message = "Something went wrong...";
     let index = 0;
 
     function flickerScreen() {
+      flickerSound.currentTime = 0;
+      flickerSound.play();
       document.body.style.opacity = Math.random() > 0.5 ? "0.95" : "1";
       setTimeout(() => {
         document.body.style.opacity = "1";
@@ -255,7 +266,13 @@ Prepare.
     document.getElementById('yesButton').onclick = () => handleAnswer('yes');
     document.getElementById('noButton').onclick = () => handleAnswer('no');
 
-    window.onload = typeMessage;
+    window.onload = () => {
+      const backgroundMusic = document.getElementById('backgroundMusic');
+      backgroundMusic.volume = 0.5; // Adjust volume as needed
+      backgroundMusic.play();
+      typeMessage();
+    };
+
     window.onresize = () => {
       canvas.height = window.innerHeight;
       canvas.width = window.innerWidth;
